@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon and Star</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0C0B0A;
+      --fg: #E8E4DF;
+      --fg-dim: #9A958E;
+      --accent: #C4A96A;
+      --accent-dim: rgba(196, 169, 106, 0.15);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Manrope', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    body {
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: difference;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 80px;
+      overflow: hidden;
+    }
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.45;
+      filter: grayscale(20%);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(12,11,10,0.1) 0%,
+        rgba(12,11,10,0.6) 60%,
+        rgba(12,11,10,1) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+      animation: fadeUp 1.2s ease-out both;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(48px, 8vw, 120px);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: var(--fg);
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      font-weight: 400;
+    }
+    .scroll-hint {
+      position: relative;
+      z-index: 2;
+      margin-top: 48px;
+      width: 1px;
+      height: 48px;
+      background: var(--fg-dim);
+      opacity: 0.4;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.5; }
+    }
+
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 32px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+
+    .section-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      margin: 0 auto 100px;
+      opacity: 0.4;
+    }
+
+    .video-section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-top: 56.25%;
+      border: 1px solid rgba(196, 169, 106, 0.15);
+    }
+    .video-wrapper iframe {
+      border: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .bio p {
+      color: var(--fg-dim);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+    .bio p:first-of-type {
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.5;
+      color: var(--fg);
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .artists {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+    }
+    .artist h3 {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      color: var(--fg);
+    }
+    .artist p {
+      color: var(--fg-dim);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .clients-section {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 32px;
+      border-top: 1px solid rgba(196, 169, 106, 0.1);
+      border-bottom: 1px solid rgba(196, 169, 106, 0.1);
+    }
+    .clients-list {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--fg-dim);
+      font-style: italic;
+      line-height: 2;
+    }
+
+    .repertoire {
+      text-align: center;
+      max-width: 700px;
+    }
+    .repertoire .songs {
+      column-count: 2;
+      column-gap: 48px;
+      text-align: left;
+    }
+    .repertoire .songs p {
+      font-size: 14px;
+      color: var(--fg-dim);
+      line-height: 2;
+      break-inside: avoid;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+    }
+    .gallery-item {
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%);
+      transition: filter 0.6s ease, transform 0.6s ease;
+    }
+    .gallery-item:hover img {
+      filter: grayscale(0%);
+      transform: scale(1.03);
+    }
+
+    .contact {
+      text-align: center;
+      padding: 120px 32px;
+    }
+    .contact-title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.2;
+      margin-bottom: 40px;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+    .contact-info a {
+      font-size: 14px;
+      letter-spacing: 0.1em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 48px 32px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--fg-dim);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { gap: 20px; }
+      .nav-links a { font-size: 10px; }
+      section { padding: 72px 24px; }
+      .artists { grid-template-columns: 1fr; gap: 48px; }
+      .repertoire .songs { column-count: 1; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .gallery { grid-template-columns: 1fr; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">Moon &amp; Star</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#repertoire">Repertoire</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <img class="hero-image" src="mati_moon___jenny_star_pic.jpg" alt="Moon and Star">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Moon <em>&amp;</em> Star</h1>
+      <p class="hero-sub">Live Music for Unforgettable Evenings</p>
+    </div>
+    <div class="scroll-hint"></div>
+  </div>
+
+  <div class="video-section reveal">
+    <div class="video-wrapper">
+      <iframe src="https://player.mediadelivery.net/embed/619556/b43d5d3a-1b22-47aa-bfd1-1d1b5bcbd7ed?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <section id="about" class="bio reveal">
+    <p class="section-label">About</p>
+    <p>Mati Moon &amp; Jenny Star are music industry professionals who have extended their talents to brands as artists — both on stage and behind the scenes.</p>
+    <p>Their music has been heard on the radio and featured in television and film. They have toured the world separately and together, and bring a timeless, Old Hollywood charm to every private event, cocktail hour, and celebration.</p>
+    <p>Meeting in Berlin in the summer of 2012, they made Los Angeles their home in 2015. By day they write and produce songs for various artists and compose for TV and film. By night, their lively renditions of classic hits and jazz standards create an atmosphere of pure enjoyment and unforgettable entertainment.</p>
+  </section>
+
+  <div class="artists reveal">
+    <div class="artist">
+      <h3>Mati Moon</h3>
+      <p>Multi-instrumentalist, composer, producer, singer, and multimedia artist. Born in Tel Aviv, raised in Germany. Released a solo album on Warner Music in 2015. His eclectic, international upbringing infuses every performance with a rare depth and warmth.</p>
+    </div>
+    <div class="artist">
+      <h3>Jenny Star</h3>
+      <p>Los Angeles-based singer, writer, and vocal producer. One of the industry's most in-demand session and live singers, having worked across New York, London, Berlin, and LA with artists including Jennifer Lopez, Elton John, Britney Spears, Celine Dion, and many more.</p>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="clients-section reveal">
+    <p class="section-label">Trusted By</p>
+    <p class="clients-list">Vacheron Constantin &middot; Four Seasons &middot; Netflix &middot; Private Events &middot; Weddings &middot; Cocktail Hours &middot; Celebrations</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <section id="repertoire" class="repertoire reveal">
+    <p class="section-label">Repertoire</p>
+    <div class="songs">
+      <p>Sway</p>
+      <p>Don't Know Why</p>
+      <p>Besame Mucho</p>
+      <p>Feel Like Makin' Love</p>
+      <p>Just the Two of Us</p>
+      <p>All of Me</p>
+      <p>My Way</p>
+      <p>Autumn Leaves</p>
+      <p>My Funny Valentine</p>
+      <p>Ev'ry Time We Say Goodbye</p>
+      <p>Uptown Funk</p>
+      <p>Whatever Lola Wants</p>
+      <p>At Last</p>
+      <p>Ain't Nobody</p>
+      <p>Make You Feel My Love</p>
+      <p>Je T'attendrai</p>
+      <p>When I Fall in Love</p>
+      <p>Killing Me Softly</p>
+      <p>Something in the Way</p>
+      <p>The Way We Were</p>
+      <p>Close to You</p>
+      <p>Shallow</p>
+      <p>Bewitched</p>
+      <p>The Rose</p>
+      <p>What a Wonderful World</p>
+      <p>Always on My Mind</p>
+      <p>Broadway Classics</p>
+      <p>Hebrew Classics</p>
+      <p>Italian Classics</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <div id="gallery">
+    <section style="max-width:900px;">
+      <p class="section-label reveal">Gallery</p>
+    </section>
+    <div class="gallery reveal">
+      <div class="gallery-item"><img src="01_Moon___Star_Rockwood.jpg" alt="Moon and Star live at Rockwood"></div>
+      <div class="gallery-item"><img src="02_Moon___Star.jpg" alt="Moon and Star portrait"></div>
+      <div class="gallery-item"><img src="03_Jenny_Karr_2.png" alt="Jenny Star performing"></div>
+      <div class="gallery-item"><img src="04_Mati_in_your_hands.jpeg" alt="Mati Moon portrait"></div>
+      <div class="gallery-item"><img src="05_IMG_2608.JPG" alt="Moon and Star on stage"></div>
+      <div class="gallery-item"><img src="06_Jenny_Karr_3_copycut.png" alt="Jenny Star singing"></div>
+    </div>
+  </div>
+
+  <section id="contact" class="contact reveal">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="contact-title">Let us light up<br>your next event</h2>
+    <div class="contact-info">
+      <a href="mailto:jkarr0808@gmail.com">jkarr0808@gmail.com</a>
+      <a href="tel:+19174943114">+1 (917) 494-3114</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 Moon &amp; Star. All rights reserved.
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
